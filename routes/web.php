@@ -17,4 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('folders/{id}/tasks', 'TaskController@index')->name('tasks.index');
+Route::get('folders/{id}/tasks', 'TaskController@index')->name('tasks.index'); 
+/* 
+/ /folders/{id}/tasksにリクエストが来たらTaskControllerのindexメソッドを呼び出す
+/　tasks.indexはこのルートの名前でアプリケーションの中でURLを参照する際にはこの名前を利用
+*/
