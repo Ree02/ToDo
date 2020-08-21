@@ -17,8 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//タスク一覧表示ページ
 Route::get('folders/{id}/tasks', 'TaskController@index')->name('tasks.index'); 
-/* 
-/ /folders/{id}/tasksにリクエストが来たらTaskControllerのindexメソッドを呼び出す
-/　tasks.indexはこのルートの名前でアプリケーションの中でURLを参照する際にはこの名前を利用
-*/
+
+//フォルダ作成ページ
+Route::get('/folders/create', 'FolderController@showCreateForm')->name('folders.create');
+
+//フォルダ作成処理
+Route::post('/folders/create', 'FolderController@create');
+
+//タスク作成ページ
+Route::get('/folders/{id}/tasks/create', 'TaskController@showCreateForm')->name('tasks.create');
+
+//タスク作成処理
+Route::post('/folders/{id}/tasks/create', 'TaskController@create');

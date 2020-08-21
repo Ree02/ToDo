@@ -4,22 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Folder; 
 use App\Task;
+use App\Http\Requests\CreateTask;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index(int $id) /*引数はルーティングで定義した波括弧内の値(今回は{id})と同じでなければならない*/
+    /**
+    * GET /folders/{id}/tasks
+    */
+    public function index(int $id) 
     {
-        $folders = Folder::all();/*folderモデルのallクラスメソッドで全てのフォルダデータをデータベースから取得 */
+        //全てのフォルダデータをデータベースから取得 
+        $folders = Folder::all();
 
-        $current_folder = Folder::find($id); /*選ばれたフォルダを取得 */
+        //選ばれたフォルダを取得
+        $current_folder = Folder::find($id); 
 
-        $tasks = Task::where('folder_id', $current_folder->id)->get();/*選ばれたフォルダに紐づくタスクを取得 */
+        //選ばれたフォルダに紐づくタスクを取得
+        $tasks = $current_folder->tasks()->get();
 
-        return view('tasks/index', [ /*view(テンプレートファイル名, テンプレートに渡すデータ) */
+        return view('tasks/index', [ 
             'folders' => $folders,
-            'current_folder_id' => $id, /*idをcurrent_folder_idに渡す */
+            'current_folder_id' => $id, //idをcurrent_folder_idに渡す 
             'tasks' => $tasks,
             ]); 
+    }
+
+    /**
+    * GET /folders/{id}/tasks/create
+    */
+    public function showCreateForm(int $id)
+    {
+        return view('tasks/create', [
+            'folder_id' => $id
+        ]);
+    }
+
+    public function create(int $id, CreateTask $request)
+    {
+        $current_folder = Folder::find($id);
+
+        $task = new Task();
+        $task->title = $request->title;
+        $task->due_date = $request->due_date;
+
+        $current_folder->tasks()->save($task);
+
+        return redirect()->route('tasks.index', [
+            'id' => $current_folder->id,
+        ]);
     }
 }
