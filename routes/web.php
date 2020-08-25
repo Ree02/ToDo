@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//ホーム画面表示
+Route::get('/', 'HomeController@index')->name('home');
+
+//会員登録
+Auth::routes();
 
 //タスク一覧ページ表示
 Route::get('folders/{id}/tasks', 'TaskController@index')->name('tasks.index'); 
@@ -37,3 +40,5 @@ Route::get('/folders/{id}/tasks/{task_id}/edit', 'TaskController@showEditForm')-
 
 //タスク編集処理実効
 Route::post('/folders/{id}/tasks/{task_id}/edit', 'TaskController@edit');
+
+Route::get('/home', 'HomeController@index')->name('home');
