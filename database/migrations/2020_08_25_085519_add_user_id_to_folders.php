@@ -29,7 +29,6 @@ class AddUserIdToFolders extends Migration
     public function down()
     {
         Schema::table('folders', function (Blueprint $table) {
-            //user_idカラムを削除
             $table->dropColumn('user_id');
         });
     }
