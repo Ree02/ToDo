@@ -18,14 +18,14 @@ Route::group(['middleware' => 'auth'], function() {
     //ホーム画面表示
     Route::get('/', 'HomeController@index')->name('home');
 
+    //フォルダ作成ページ表示
+    Route::get('/folders/create', 'FolderController@showCreateForm')->name('folders.create');
+    //フォルダ作成処理実効
+    Route::post('/folders/create', 'FolderController@create'); 
+
     Route::group(['middleware' => 'can:view,folder'], function() {
         //タスク一覧ページ表示
         Route::get('/folders/{folder}/tasks', 'TaskController@index')->name('tasks.index');
-
-         //フォルダ作成ページ表示
-        Route::get('/folders/create', 'FolderController@showCreateForm')->name('folders.create');
-        //フォルダ作成処理実効
-        Route::post('/folders/create', 'FolderController@create');
 
         //タスク作成ページ表示
         Route::get('/folders/{folder}/tasks/create', 'TaskController@showCreateForm')->name('tasks.create');
